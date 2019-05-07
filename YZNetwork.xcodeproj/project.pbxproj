@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9257C644AAFB02255458A0C5 /* libPods-YZNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1918EB28E4EB5F5ABF4384BF /* libPods-YZNetwork.a */; };
+		AE1F68B22281A54E00AAABD0 /* YZNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1F68B12281A54E00AAABD0 /* YZNetworkManager.m */; };
+		AE1F68B52281AD7A00AAABD0 /* YZBaseRequest+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */; };
+		AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E08BD228068AE003DC31E /* YZBaseRequest.m */; };
 		AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB94D22802F4E00AF636F /* AppDelegate.m */; };
 		AEEFB95122802F4E00AF636F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB95022802F4E00AF636F /* ViewController.m */; };
 		AEEFB95422802F4E00AF636F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEFB95222802F4E00AF636F /* Main.storyboard */; };
@@ -33,6 +36,13 @@
 		31DC36C2AFF4411EE0C57C97 /* Pods-YZNetwork.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YZNetwork.debug.xcconfig"; path = "Target Support Files/Pods-YZNetwork/Pods-YZNetwork.debug.xcconfig"; sourceTree = "<group>"; };
 		65DD7989E30F5DCF1A6D5F77 /* Pods-YZNetworkTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YZNetworkTests.release.xcconfig"; path = "Target Support Files/Pods-YZNetworkTests/Pods-YZNetworkTests.release.xcconfig"; sourceTree = "<group>"; };
 		6A63B58184D34508004AB95B /* Pods-YZNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YZNetwork.release.xcconfig"; path = "Target Support Files/Pods-YZNetwork/Pods-YZNetwork.release.xcconfig"; sourceTree = "<group>"; };
+		AE1F68B02281A54E00AAABD0 /* YZNetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkManager.h; sourceTree = "<group>"; };
+		AE1F68B12281A54E00AAABD0 /* YZNetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkManager.m; sourceTree = "<group>"; };
+		AE1F68B32281AD7A00AAABD0 /* YZBaseRequest+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YZBaseRequest+Private.h"; sourceTree = "<group>"; };
+		AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "YZBaseRequest+Private.m"; sourceTree = "<group>"; };
+		AE3E08BC228068AE003DC31E /* YZBaseRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBaseRequest.h; sourceTree = "<group>"; };
+		AE3E08BD228068AE003DC31E /* YZBaseRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBaseRequest.m; sourceTree = "<group>"; };
+		AED4587D228048B300C02AF1 /* YZNetworkDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkDefine.h; sourceTree = "<group>"; };
 		AEEFB94922802F4E00AF636F /* YZNetwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YZNetwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEFB94C22802F4E00AF636F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AEEFB94D22802F4E00AF636F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -78,7 +88,6 @@
 				CFD403C0E2EBA0C6C8780B77 /* Pods-YZNetworkTests.debug.xcconfig */,
 				65DD7989E30F5DCF1A6D5F77 /* Pods-YZNetworkTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -89,6 +98,26 @@
 				D669EC0BA3D929ECA54C734D /* libPods-YZNetworkTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE3E08BB2280657A003DC31E /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				AE3E08BC228068AE003DC31E /* YZBaseRequest.h */,
+				AE3E08BD228068AE003DC31E /* YZBaseRequest.m */,
+				AE1F68B32281AD7A00AAABD0 /* YZBaseRequest+Private.h */,
+				AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		AED4587C2280478400C02AF1 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				AE1F68B02281A54E00AAABD0 /* YZNetworkManager.h */,
+				AE1F68B12281A54E00AAABD0 /* YZNetworkManager.m */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		AEEFB94022802F4E00AF636F = {
@@ -140,6 +169,9 @@
 		AEEFB97022802F7700AF636F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AE3E08BB2280657A003DC31E /* Request */,
+				AED4587C2280478400C02AF1 /* Manager */,
+				AED4587D228048B300C02AF1 /* YZNetworkDefine.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -294,6 +326,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEFB95122802F4E00AF636F /* ViewController.m in Sources */,
+				AE1F68B52281AD7A00AAABD0 /* YZBaseRequest+Private.m in Sources */,
+				AE1F68B22281A54E00AAABD0 /* YZNetworkManager.m in Sources */,
+				AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */,
 				AEEFB95C22802F5000AF636F /* main.m in Sources */,
 				AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */,
 			);

@@ -7,8 +7,11 @@
 //
 
 #import "YZBaseRequest.h"
+#import "YZBaseRequest+Private.h"
 
 @interface YZBaseRequest()
+
+@property (nonatomic, strong, readwrite) NSURLSessionTask *requestTask;
 
 @end
 
@@ -35,6 +38,12 @@
 - (void)clearRequestBlocks {
     self.successCompletionBlock = nil;
     self.failureCompletionBlock = nil;
+}
+
+#pragma mark - NSObject
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p>{ URL: %@ } { method: %@ } { arguments: %@ }", NSStringFromClass([self class]), self, [self buildRequestUrl], self.requestHttpMethedString, self.requestParameter];
 }
 
 @end

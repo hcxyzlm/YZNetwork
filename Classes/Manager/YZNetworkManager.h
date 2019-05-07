@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YZNetworkManager : NSObject
 
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-+ (instancetype)shareManager;
+- (instancetype)init OBJC_UNAVAILABLE("use 'sharedManager' instead");
++ (instancetype)new OBJC_UNAVAILABLE("use 'sharedManager' instead");
++ (instancetype)sharedManager;
 
 - (void)addRequest:(YZBaseRequest *)request;
 

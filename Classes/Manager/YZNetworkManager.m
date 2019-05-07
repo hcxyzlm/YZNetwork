@@ -13,8 +13,12 @@
 #import <pthread/pthread.h>
 
 /// 宏
-#define YZMutexLock() pthread_mutex_lock(&_lock)
-#define YZMutexUnLock() pthread_mutex_unlock(&_lock)
+#define YZ_RequestsRecord_LOCK(...) \
+pthread_mutex_lock(&_lock); \
+__VA_ARGS__ \
+pthread_mutex_unlock(&_lock);
+
+typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 @interface YZNetworkManager()
 /** 网络的唯一标示管理类 */
@@ -29,12 +33,11 @@
     pthread_mutex_t _lock;
     //afn 队列
     AFHTTPSessionManager *_manager;
-    AFHTTPRequestSerializer *_Serializer;
 }
 
 #pragma mark - Life Cycle
 
-+ (instancetype)shareManager {
++ (instancetype)sharedManager {
     static YZNetworkManager *instacne;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -46,15 +49,15 @@
 
 // 重写该方法，调用alloc会调用改方法
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
-    return  [self shareManager];
+    return  [self sharedManager];
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _requestsRecord = [NSMutableDictionary dictionary];
         _processingQueue = dispatch_queue_create("com.YZNetworkManager.processingQueue", DISPATCH_QUEUE_CONCURRENT);
         pthread_mutex_init(&_lock, NULL);
+        _manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration: [NSURLSessionConfiguration defaultSessionConfiguration]];
     }
     return self;
 }
@@ -70,7 +73,6 @@
     NSParameterAssert(request != nil);
     
     NSError * __autoreleasing requestSerializationError = nil;
-    NSString *requestUrlString = [request buildRequestUrl];
     
     // 构建网络请求数据
     NSString *method = [request requestHttpMethedString];
@@ -78,26 +80,35 @@
     id parameter = [self parameterForRequest:request];
     
     // 构建 URLRequest
-    NSError *error = nil;
-    NSMutableURLRequest *URLRequest = nil;
+    NSMutableURLRequest *urlRequest = nil;
+    AFHTTPRequestSerializer *serializer = [self requestSerializerForRequest:request];
     if (request.requestConstructingBody) {
-        URLRequest = [serializer multipartFormRequestWithMethod:@"POST" URLString:URLString parameters:parameter constructingBodyWithBlock:request.requestConstructingBody error:&error];
+        urlRequest = [serializer multipartFormRequestWithMethod:@"POST" URLString:URLString parameters:parameter constructingBodyWithBlock:request.requestConstructingBody error:&requestSerializationError];
     } else {
-        URLRequest = [serializer requestWithMethod:method URLString:URLString parameters:parameter error:&error];
+        urlRequest = [serializer requestWithMethod:method URLString:URLString parameters:parameter error:&requestSerializationError];
     }
     
-    if (error) {
-        if (completion) completion([YBNetworkResponse responseWithSessionTask:nil responseObject:nil error:error]);
-        return nil;
-    }
+        if (urlRequest) {
+            __block NSURLSessionDataTask *dataTask = nil;
+            dataTask = [_manager dataTaskWithRequest:urlRequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+//                [self handleRequestResult:dataTask responseObject:responseObject error:error];
+            }];
+//            request.requestTask = dataTask;
+        } else {
+//            request.requestTask = [self sessionTaskForRequest:request error:&requestSerializationError];
+        }
+    
+//    if (error) {
+//        if (completion) completion([YBNetworkResponse responseWithSessionTask:nil responseObject:nil error:error]);
+//        return nil;
+//    }
     
     // 发起网络请求
-    AFHTTPSessionManager *manager = [self sessionManagerForRequest:request];
-    if (request.downloadPath.length > 0) {
-        return [self startDownloadTaskWithManager:manager URLRequest:URLRequest downloadPath:request.downloadPath downloadProgress:downloadProgress completion:completion];
-    } else {
-        return [self startDataTaskWithManager:manager URLRequest:URLRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
-    }
+//    if (request.downloadPath.length > 0) {
+//        return [self startDownloadTaskWithManager:manager URLRequest:URLRequest downloadPath:request.downloadPath downloadProgress:downloadProgress completion:completion];
+//    } else {
+//        return [self startDataTaskWithManager:manager URLRequest:URLRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
+//    }
     
 //    NSURLRequest *customUrlRequest= [request buildCustomUrlRequest];
 //    if (customUrlRequest) {
@@ -145,6 +156,26 @@
 
 #pragma mark - Private
 
+- (void)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZBaseRequestUploadProgressBlock)uploadProgress downloadProgress:(nullable YZBaseRequestDownloadProgress)downloadProgress completion:(YZRequestCompletionBlock)completion {
+    
+    __block NSURLSessionDataTask *task = [_manager dataTaskWithRequest:URLRequest uploadProgress:^(NSProgress * _Nonnull _uploadProgress) {
+        if (uploadProgress) {
+            uploadProgress(_uploadProgress);
+        }
+    } downloadProgress:^(NSProgress * _Nonnull _downloadProgress) {
+        if (downloadProgress) {
+            downloadProgress(_downloadProgress);
+        }
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (completion) {
+        }
+    }];
+    request.requestTask = task;
+    NSAssert(request.requestTask != nil, @"requestTask should not be nil");
+    [self addRequestToRecord:request];
+    [task resume];
+}
+
 - (NSString *)URLStringForRequest:(YZBaseRequest *)request {
     NSString *URLString = [request buildRequestUrl];
     // todo, 插件机制
@@ -159,8 +190,7 @@
 }
 
 - (void)addRequestToRecord:(YZBaseRequest *)request {
-    YZMutexLock();
-    YZMutexUnLock();
+    YZ_RequestsRecord_LOCK(self.requestsRecord[@(request.requestTask.taskIdentifier)] = request;)
 }
 
 - (AFHTTPRequestSerializer *)requestSerializerForRequest:(YZBaseRequest *)request {
@@ -175,21 +205,30 @@
 //    requestSerializer.allowsCellularAccess = [request allowsCellularAccess];
     
     // If api needs server username and password
-    NSArray<NSString *> *authorizationHeaderFieldArray = [request requestAuthorizationHeaderFieldArray];
-    if (authorizationHeaderFieldArray != nil) {
-        [requestSerializer setAuthorizationHeaderFieldWithUsername:authorizationHeaderFieldArray.firstObject
-                                                          password:authorizationHeaderFieldArray.lastObject];
-    }
-    
-    // If api needs to add custom value to HTTPHeaderField
-    NSDictionary<NSString *, NSString *> *headerFieldValueDictionary = [request requestHeaderFieldValueDictionary];
-    if (headerFieldValueDictionary != nil) {
-        for (NSString *httpHeaderField in headerFieldValueDictionary.allKeys) {
-            NSString *value = headerFieldValueDictionary[httpHeaderField];
-            [requestSerializer setValue:value forHTTPHeaderField:httpHeaderField];
-        }
-    }
+//    NSArray<NSString *> *authorizationHeaderFieldArray = [request requestAuthorizationHeaderFieldArray];
+//    if (authorizationHeaderFieldArray != nil) {
+//        [requestSerializer setAuthorizationHeaderFieldWithUsername:authorizationHeaderFieldArray.firstObject
+//                                                          password:authorizationHeaderFieldArray.lastObject];
+//    }
+//
+//    // If api needs to add custom value to HTTPHeaderField
+//    NSDictionary<NSString *, NSString *> *headerFieldValueDictionary = [request requestHeaderFieldValueDictionary];
+//    if (headerFieldValueDictionary != nil) {
+//        for (NSString *httpHeaderField in headerFieldValueDictionary.allKeys) {
+//            NSString *value = headerFieldValueDictionary[httpHeaderField];
+//            [requestSerializer setValue:value forHTTPHeaderField:httpHeaderField];
+//        }
+//    }
     return requestSerializer;
+}
+
+#pragma mark getter
+
+- (NSMutableDictionary<NSNumber *,NSURLSessionTask *> *)requestsRecord {
+    if (!_requestsRecord) {
+        _requestsRecord = [NSMutableDictionary dictionary];
+    }
+    return _requestsRecord;
 }
 
 @end

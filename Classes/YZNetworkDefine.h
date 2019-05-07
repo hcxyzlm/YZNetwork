@@ -48,15 +48,33 @@ typedef NS_ENUM(NSInteger, YZRequestPriority) {
     YZRequestPriorityHigh = 4,
 };
 
+@class YZBaseRequest;
+@class YZNetworkResponse;
+
 // 请求成功闭包
-typedef void(^YZBaseRequestSuccessBlock)();
+typedef void(^YZBaseRequestSuccessBlock)(YZNetworkResponse *response);
 
 /// 请求失败闭包
-typedef void(^YZBaseRequestFailureBlock)();
+typedef void(^YZBaseRequestFailureBlock)(YZNetworkResponse *response);
+
+/// 上传进度
+typedef void (^YZBaseRequestUploadProgressBlock)(NSProgress *uploadProgress);
+
+/// 下载进度
+typedef void (^YZBaseRequestDownloadProgress)(NSProgress *uploadProgress);
+
 
 /// 网络请求响应代理
 @protocol YZBaseRequestDelegate <NSObject>
 @optional
+
+- (void)request:(__kindof YZBaseRequest *)request successWithResponse:(YZNetworkResponse *)response;
+
+- (void)request:(__kindof YZBaseRequest *)request failureWithResponse:(YZNetworkResponse *)response;
+
+- (void)request:(__kindof YZBaseRequest *)request uploadProgress:(NSProgress *)progress;
+
+- (void)request:(__kindof YZBaseRequest *)request downloadProgress:(NSProgress *)progress;
 
 @end
 

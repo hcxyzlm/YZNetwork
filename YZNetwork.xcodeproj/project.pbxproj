@@ -10,6 +10,7 @@
 		9257C644AAFB02255458A0C5 /* libPods-YZNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1918EB28E4EB5F5ABF4384BF /* libPods-YZNetwork.a */; };
 		AE1F68B22281A54E00AAABD0 /* YZNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1F68B12281A54E00AAABD0 /* YZNetworkManager.m */; };
 		AE1F68B52281AD7A00AAABD0 /* YZBaseRequest+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */; };
+		AE1F68B82281F08700AAABD0 /* YZNetworkResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1F68B72281F08700AAABD0 /* YZNetworkResponse.m */; };
 		AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E08BD228068AE003DC31E /* YZBaseRequest.m */; };
 		AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB94D22802F4E00AF636F /* AppDelegate.m */; };
 		AEEFB95122802F4E00AF636F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB95022802F4E00AF636F /* ViewController.m */; };
@@ -40,6 +41,8 @@
 		AE1F68B12281A54E00AAABD0 /* YZNetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkManager.m; sourceTree = "<group>"; };
 		AE1F68B32281AD7A00AAABD0 /* YZBaseRequest+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YZBaseRequest+Private.h"; sourceTree = "<group>"; };
 		AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "YZBaseRequest+Private.m"; sourceTree = "<group>"; };
+		AE1F68B62281F08700AAABD0 /* YZNetworkResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkResponse.h; sourceTree = "<group>"; };
+		AE1F68B72281F08700AAABD0 /* YZNetworkResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkResponse.m; sourceTree = "<group>"; };
 		AE3E08BC228068AE003DC31E /* YZBaseRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZBaseRequest.h; sourceTree = "<group>"; };
 		AE3E08BD228068AE003DC31E /* YZBaseRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZBaseRequest.m; sourceTree = "<group>"; };
 		AED4587D228048B300C02AF1 /* YZNetworkDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkDefine.h; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 				AE3E08BD228068AE003DC31E /* YZBaseRequest.m */,
 				AE1F68B32281AD7A00AAABD0 /* YZBaseRequest+Private.h */,
 				AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */,
+				AE1F68B62281F08700AAABD0 /* YZNetworkResponse.h */,
+				AE1F68B72281F08700AAABD0 /* YZNetworkResponse.m */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -326,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEFB95122802F4E00AF636F /* ViewController.m in Sources */,
+				AE1F68B82281F08700AAABD0 /* YZNetworkResponse.m in Sources */,
 				AE1F68B52281AD7A00AAABD0 /* YZBaseRequest+Private.m in Sources */,
 				AE1F68B22281A54E00AAABD0 /* YZNetworkManager.m in Sources */,
 				AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */,

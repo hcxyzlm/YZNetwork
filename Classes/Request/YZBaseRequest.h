@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 请求成功代理*/
 @property (nonatomic, weak) id<YZBaseRequestDelegate> delegate;
 
+#pragma mark http 相关
+
+@property (nonatomic, strong, readonly) NSURLSessionTask *requestTask;
+
 #pragma mark request
 
 - (void)start;

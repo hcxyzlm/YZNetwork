@@ -12,8 +12,29 @@
 @property (nonatomic, strong, readwrite, nullable) id responseObject;
 @property (nonatomic, strong, readwrite, nullable) NSHTTPURLResponse *httpURLResponse;
 @property (nonatomic, strong, readwrite, nullable) NSError * error;
+@property (nonatomic, strong, readwrite, nullable) NSURLSessionTask *sessionTask;
 @end
 
 @implementation YZNetworkResponse
+
++ (instancetype)responseWithSessionTask:(nullable NSURLSessionTask *)sessionTask
+                         responseObject:(nullable id)responseObject
+                                  error:(nullable NSError *)error {
+    
+    YZNetworkResponse *response = [[YZNetworkResponse alloc] init];
+    response.sessionTask = sessionTask;
+    response.error = error;
+    response.responseObject = responseObject;
+    return response;
+}
+
+#pragma mark getter
+
+- (NSHTTPURLResponse *)httpURLResponse {
+    if (self.sessionTask && [self.sessionTask.response isKindOfClass:NSHTTPURLResponse.class]) {
+        return (NSHTTPURLResponse *)self.sessionTask.response;
+    }
+    return nil;
+}
 
 @end

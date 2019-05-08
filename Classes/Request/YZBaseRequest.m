@@ -28,8 +28,7 @@
 
 - (void)startWithSuccess:(nullable YZRequestSuccessBlock)success
                  failure:(nullable YZRequestSuccessBlock)failure {
-    self.successCompletionBlock = success;
-    self.failureCompletionBlock = failure;
+    [self startWithUploadProgress:nil downloadProgress:nil success:success failure:failure];
 }
 
 - (void)startWithUploadProgress:(YZRequestProgressBlock)uploadProgress downloadProgress:(YZRequestProgressBlock)downloadProgress success:(YZRequestSuccessBlock)success failure:(YZRequestFailureBlock)failure {

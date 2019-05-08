@@ -15,11 +15,19 @@ NS_ASSUME_NONNULL_BEGIN
 /** 请求成功数据*/
 @property (nonatomic, strong, readonly, nullable) id responseObject;
 
+/** 错误*/
+@property (nonatomic, strong, readonly, nullable) NSError * error;
+
 /** 请求原始http数据*/
 @property (nonatomic, strong, readonly, nullable) NSHTTPURLResponse *httpURLResponse;
 
-/** 错误*/
-@property (nonatomic, strong, readonly, nullable) NSError * error;
+/** 请求任务*/
+@property (nonatomic, strong, readonly, nullable) NSURLSessionTask *sessionTask;
+
++ (instancetype)responseWithSessionTask:(nullable NSURLSessionTask *)sessionTask
+                         responseObject:(nullable id)responseObject
+                                  error:(nullable NSError *)error;
+
 
 @end
 

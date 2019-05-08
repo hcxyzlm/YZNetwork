@@ -11,6 +11,7 @@
 #import "YZNetworkDefine.h"
 #import "YZBaseRequest+Private.h"
 #import <pthread/pthread.h>
+#import "YZNetworkResponse.h"
 
 /// 宏
 #define YZ_RequestsRecord_LOCK(...) \
@@ -20,6 +21,7 @@ pthread_mutex_unlock(&_lock);
 
 
 @interface YZNetworkManager()
+
 /** 网络的唯一标示管理类 */
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, YZBaseRequest *> *requestsRecord;
 
@@ -44,11 +46,6 @@ pthread_mutex_unlock(&_lock);
     });
     
     return instacne;
-}
-
-// 重写该方法，调用alloc会调用改方法
-+ (instancetype)allocWithZone:(struct _NSZone *)zone {
-    return  [self sharedManager];
 }
 
 - (instancetype)init {
@@ -87,6 +84,10 @@ pthread_mutex_unlock(&_lock);
     } else {
         urlRequest = [serializer requestWithMethod:method URLString:URLString parameters:parameter error:&requestSerializationError];
     }
+    if (requestSerializationError) {
+        if (completion) completion([YZNetworkResponse responseWithSessionTask:nil responseObject:nil error:requestSerializationError]);
+        return nil;
+    }
     return [self startDataTaskWithRequest:request URLRequest:urlRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
 }
 
@@ -105,7 +106,7 @@ pthread_mutex_unlock(&_lock);
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self removeRequestfromRecord: request];
         if (completion) {
-//            completion(response, responseObject, error);
+            completion([YZNetworkResponse responseWithSessionTask:task responseObject:responseObject error:error]);
         }
     }];
     request.requestTask = task;
@@ -146,23 +147,6 @@ pthread_mutex_unlock(&_lock);
     }
     
     requestSerializer.timeoutInterval = [request requestTimeout];
-//    requestSerializer.allowsCellularAccess = [request allowsCellularAccess];
-    
-    // If api needs server username and password
-//    NSArray<NSString *> *authorizationHeaderFieldArray = [request requestAuthorizationHeaderFieldArray];
-//    if (authorizationHeaderFieldArray != nil) {
-//        [requestSerializer setAuthorizationHeaderFieldWithUsername:authorizationHeaderFieldArray.firstObject
-//                                                          password:authorizationHeaderFieldArray.lastObject];
-//    }
-//
-//    // If api needs to add custom value to HTTPHeaderField
-//    NSDictionary<NSString *, NSString *> *headerFieldValueDictionary = [request requestHeaderFieldValueDictionary];
-//    if (headerFieldValueDictionary != nil) {
-//        for (NSString *httpHeaderField in headerFieldValueDictionary.allKeys) {
-//            NSString *value = headerFieldValueDictionary[httpHeaderField];
-//            [requestSerializer setValue:value forHTTPHeaderField:httpHeaderField];
-//        }
-//    }
     return requestSerializer;
 }
 

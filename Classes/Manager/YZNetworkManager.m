@@ -147,7 +147,7 @@ pthread_mutex_unlock(&_lock);
         requestSerializer = [AFJSONRequestSerializer serializer];
     }
     
-    requestSerializer.timeoutInterval = [request requestTimeout];
+    requestSerializer.timeoutInterval = [request timeoutInterval];
     return requestSerializer;
 }
 

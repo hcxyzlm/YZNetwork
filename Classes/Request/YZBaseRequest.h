@@ -21,13 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) YZRequestMethod requestMethod;
 
 /** 服务里路径(例如： movie/detail) */
-@property (nonatomic, copy) NSString *requestUrl;
+@property (nonatomic, copy) NSString *requestURL;
 
 /** 请求参数 */
 @property (nonatomic, copy, nullable) NSDictionary *requestParameter;
 
 /** 请求超时 */
-@property (nonatomic,assign) NSTimeInterval requestTimeout;
+@property (nonatomic,assign) NSTimeInterval timeoutInterval;
 
 /** 请求优先级 */
 @property (nonatomic,assign) YZRequestPriority requestPriority;
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, getter=isExecuting) BOOL executing;
 
 /** 服务器地址(例如：https://www.baidu.com) */
-@property (nonatomic, copy) NSString *baseUrl;
+@property (nonatomic, copy) NSString *baseURL;
 
 /** 下载地址*/
 /** 注释 */

@@ -30,14 +30,14 @@
 - (NSString *)buildRequestUrl {
     
     NSParameterAssert(self != nil);
-    NSString * baseUrl = self.baseUrl;
-    NSURL *url = [NSURL URLWithString: baseUrl];
+    NSString * baseURL = self.baseURL;
+    NSURL *url = [NSURL URLWithString: baseURL];
     
-    if (baseUrl.length > 0 && ![baseUrl hasSuffix:@"/"]) {
+    if (baseURL.length > 0 && ![baseURL hasSuffix:@"/"]) {
         url = [url URLByAppendingPathComponent:@""];
     }
     
-    return [NSURL URLWithString:self.requestUrl relativeToURL:url].absoluteString;
+    return [NSURL URLWithString:self.requestURL relativeToURL:url].absoluteString;
 }
 
 

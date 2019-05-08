@@ -16,8 +16,8 @@
 {
     self = [super init];
     if (self) {
-        self.baseUrl = @"https://www.apiopen.top";
-        self.requestTimeout = 25;
+        self.baseURL = @"https://www.apiopen.top";
+        self.timeoutInterval = 25;
     }
     return self;
 }

@@ -30,7 +30,7 @@
 - (void)testNormalRequest {
     DefaultServerApi *request = [[DefaultServerApi alloc] init];
     request.requestMethod = YZRequestMethodGET;
-    request.requestUrl = @"novelSearchApi";
+    request.requestURL = @"novelSearchApi";
     request.requestParameter = @{@"name":@"盗墓笔记"};
     request.requestSerializerType = YZRequestSerializerTypeJSON;
     [request startWithSuccess:^(YZNetworkResponse *response) {

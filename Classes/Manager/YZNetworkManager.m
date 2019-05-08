@@ -55,6 +55,7 @@ pthread_mutex_unlock(&_lock);
         pthread_mutex_init(&_lock, NULL);
         _manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration: [NSURLSessionConfiguration defaultSessionConfiguration]];
         _manager.completionQueue = _processingQueue;
+        _manager.responseSerializer = [AFJSONResponseSerializer serializer];
     }
     return self;
 }

@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YZNetworkDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// 网络请求管理类
 
 @class YZBaseRequest;
+@class YZNetworkResponse;
+
+typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 @interface YZNetworkManager : NSObject
 
@@ -20,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new OBJC_UNAVAILABLE("use 'sharedManager' instead");
 + (instancetype)sharedManager;
 
-- (void)addRequest:(YZBaseRequest *)request;
+- (NSNumber *)startNetworkingWithRequest:(YZBaseRequest *)request uploadProgress:(nullable YZRequestProgressBlock)uploadProgress downloadProgress:(nullable YZRequestProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion;
 
 @end
 

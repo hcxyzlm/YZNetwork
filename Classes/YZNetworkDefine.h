@@ -15,14 +15,19 @@
 #import "AFNetworking.h"
 #endif
 
-void YZLog(NSString *format, ...) {
-#ifdef DEBUG
-    va_list argptr;
-    va_start(argptr, format);
-    NSLogv(format, argptr);
-    va_end(argptr);
-#endif
+#if DEBUG
+// 自定义调试宏
+#define YZNetworkLog(format, ...)  {                                                                               \
+fprintf(stderr, "<%s : %d> %s\n",                                           \
+[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
+__LINE__, __func__);                                                        \
+(NSLog)((format), ##__VA_ARGS__);                                           \
+fprintf(stderr, "-------\n");                                               \
 }
+#else
+
+#define YZNetworkLog(format, ...)
+#endif
 
 
 /// http请求方法类型
@@ -52,20 +57,17 @@ typedef NS_ENUM(NSInteger, YZRequestPriority) {
 @class YZNetworkResponse;
 
 // 请求成功闭包
-typedef void(^YZBaseRequestSuccessBlock)(YZNetworkResponse *response);
+typedef void(^YZRequestSuccessBlock)(YZNetworkResponse *response);
 
 /// 请求失败闭包
-typedef void(^YZBaseRequestFailureBlock)(YZNetworkResponse *response);
+typedef void(^YZRequestFailureBlock)(YZNetworkResponse *response);
 
-/// 上传进度
-typedef void (^YZBaseRequestUploadProgressBlock)(NSProgress *uploadProgress);
-
-/// 下载进度
-typedef void (^YZBaseRequestDownloadProgressBlock)(NSProgress *uploadProgress);
+/// 进度
+typedef void (^YZRequestProgressBlock)(NSProgress *progress);
 
 
 /// 网络请求响应代理
-@protocol YZBaseRequestDelegate <NSObject>
+@protocol YZRequestDelegate <NSObject>
 @optional
 
 - (void)request:(__kindof YZBaseRequest *)request successWithResponse:(YZNetworkResponse *)response;

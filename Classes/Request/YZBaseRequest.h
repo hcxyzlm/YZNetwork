@@ -50,20 +50,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark 请求回调
 /** 请求成功回调闭包*/
-@property (nonatomic, copy, nullable) YZBaseRequestSuccessBlock successCompletionBlock;
+@property (nonatomic, copy, nullable) YZRequestSuccessBlock successCompletionBlock;
 
 /** 请求成功回调闭包*/
-@property (nonatomic, copy, nullable) YZBaseRequestFailureBlock failureCompletionBlock;
+@property (nonatomic, copy, nullable) YZRequestFailureBlock failureCompletionBlock;
 
 /** 上传文件进度闭包*/
-@property (nonatomic, copy, nullable) YZBaseRequestUploadProgressBlock uploadProgressBlock;
+@property (nonatomic, copy, nullable) YZRequestProgressBlock uploadProgressBlock;
 
 /** 下载文件进度闭包*/
-@property (nonatomic, copy, nullable) YZBaseRequestDownloadProgressBlock downloadProgressBlock;
+@property (nonatomic, copy, nullable) YZRequestProgressBlock downloadProgressBlock;
 
 #pragma mark delegate
 /** 请求成功代理*/
-@property (nonatomic, weak) id<YZBaseRequestDelegate> delegate;
+@property (nonatomic, weak) id<YZRequestDelegate> delegate;
 
 #pragma mark http 相关
 
@@ -71,7 +71,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark request
 
-/** 开始请求*/
+/** 发起网络请求带回调 */
+- (void)startWithSuccess:(nullable YZRequestSuccessBlock)success
+                 failure:(nullable YZRequestSuccessBlock)failure;
+
 - (void)start;
 
 /** 取消网络请求*/

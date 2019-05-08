@@ -18,7 +18,6 @@ pthread_mutex_lock(&_lock); \
 __VA_ARGS__ \
 pthread_mutex_unlock(&_lock);
 
-typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 @interface YZNetworkManager()
 /** 网络的唯一标示管理类 */
@@ -70,7 +69,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 #pragma mark - Public
 
-- (void)addRequest:(YZBaseRequest *)request {
+- (NSNumber *)startNetworkingWithRequest:(YZBaseRequest *)request uploadProgress:(nullable YZRequestProgressBlock)uploadProgress downloadProgress:(nullable YZRequestProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
     NSParameterAssert(request != nil);
     
     NSError * __autoreleasing requestSerializationError = nil;
@@ -88,21 +87,12 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
     } else {
         urlRequest = [serializer requestWithMethod:method URLString:URLString parameters:parameter error:&requestSerializationError];
     }
-    
-        if (urlRequest) {
-            __block NSURLSessionDataTask *dataTask = nil;
-            dataTask = [_manager dataTaskWithRequest:urlRequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-//                [self handleRequestResult:dataTask responseObject:responseObject error:error];
-            }];
-//            request.requestTask = dataTask;
-        } else {
-//            request.requestTask = [self sessionTaskForRequest:request error:&requestSerializationError];
-        }
+    return [self startDataTaskWithRequest:request URLRequest:urlRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
 }
 
 #pragma mark - Private
 
-- (void)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZBaseRequestUploadProgressBlock)uploadProgress downloadProgress:(nullable YZBaseRequestDownloadProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
+- (NSNumber *)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZRequestProgressBlock)uploadProgress downloadProgress:(nullable YZRequestProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
     
     __block NSURLSessionDataTask *task = [_manager dataTaskWithRequest:URLRequest uploadProgress:^(NSProgress * _Nonnull _uploadProgress) {
         if (uploadProgress) {
@@ -122,6 +112,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
     NSAssert(request.requestTask != nil, @"requestTask should not be nil");
     [self addRequestToRecord:request];
     [task resume];
+    return @(task.taskIdentifier);
 }
 
 - (NSString *)URLStringForRequest:(YZBaseRequest *)request {
@@ -138,6 +129,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 }
 
 - (void)addRequestToRecord:(YZBaseRequest *)request {
+    YZNetworkLog(@"Add request: %@", NSStringFromClass([request class]));
     YZ_RequestsRecord_LOCK(self.requestsRecord[@(request.requestTask.taskIdentifier)] = request;)
 }
 

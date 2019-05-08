@@ -75,6 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startWithSuccess:(nullable YZRequestSuccessBlock)success
                  failure:(nullable YZRequestSuccessBlock)failure;
 
+- (void)startWithUploadProgress:(YZRequestProgressBlock)uploadProgress downloadProgress:(YZRequestProgressBlock)downloadProgress success:(YZRequestSuccessBlock)success failure:(YZRequestFailureBlock)failure;
+
 - (void)start;
 
 /** 取消网络请求*/

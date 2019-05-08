@@ -9,6 +9,7 @@
 #import "YZBaseRequest.h"
 #import "YZBaseRequest+Private.h"
 #import "YZNetworkManager.h"
+#import "YZNetworkResponse.h"
 
 #define YZNETWORK_MAIN_QUEUE_ASYNC(block) YBNETWORK_QUEUE_ASYNC(dispatch_get_main_queue(), block)
 
@@ -31,9 +32,20 @@
     self.failureCompletionBlock = failure;
 }
 
+- (void)startWithUploadProgress:(YZRequestProgressBlock)uploadProgress downloadProgress:(YZRequestProgressBlock)downloadProgress success:(YZRequestSuccessBlock)success failure:(YZRequestFailureBlock)failure {
+    self.uploadProgressBlock = uploadProgress;
+    self.downloadProgressBlock = downloadProgress;
+    self.successCompletionBlock = success;
+    self.failureCompletionBlock = failure;
+    [self start];
+}
+
 - (void)start {
+    
+    __weak typeof(self) weakSelf = self;
     [[YZNetworkManager sharedManager] startNetworkingWithRequest:self uploadProgress:self.uploadProgressBlock downloadProgress:self.downloadProgressBlock completion:^(YZNetworkResponse * _Nonnull response) {
-        
+        __strong typeof(weakSelf) self = weakSelf;
+        [self handleCompletionWithResponse:response];
     }];
 }
 
@@ -43,11 +55,41 @@
 
 #pragma mark - Private
 
+- (void)handleCompletionWithResponse:(YZNetworkResponse *)response {
+    if (response.error) {
+        [self requestFailureWithResponse:response];
+    } else {
+        
+    }
+}
+
 - (void)clearRequestBlocks {
     self.successCompletionBlock = nil;
     self.failureCompletionBlock = nil;
     self.uploadProgressBlock = nil;
     self.downloadProgressBlock = nil;
+}
+
+- (void)requestSuccessWithResponse:(YZNetworkResponse *)response {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(request:successWithResponse:)]) {
+            [self.delegate request:self successWithResponse:response];
+        }
+        if (self.successCompletionBlock) {
+            self.successCompletionBlock(response);
+        }
+    });
+}
+
+- (void)requestFailureWithResponse:(YZNetworkResponse *)response {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(request:failureWithResponse:)]) {
+            [self.delegate request:self failureWithResponse:response];
+        }
+        if (self.failureCompletionBlock) {
+            self.failureCompletionBlock(response);
+        }
+    });
 }
 
 - (void)requestUploadProgress:(NSProgress *)progress {
@@ -72,11 +114,6 @@
     });
 }
 
-- (void)requestFailureWithResponse:(YZNetworkResponse *)response {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
-}
 
 #pragma mark - NSObject
 

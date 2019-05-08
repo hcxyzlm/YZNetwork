@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TestViewController.h"
 
 @interface ViewController ()
 
@@ -18,8 +19,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
-
-- (IBAction)clickTest:(id)sender {
+- (IBAction)goto:(id)sender {
+    
+    TestViewController *vc = [[TestViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

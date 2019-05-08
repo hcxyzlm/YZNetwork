@@ -44,12 +44,22 @@ NS_ASSUME_NONNULL_BEGIN
 /** 服务器地址(例如：https://www.baidu.com) */
 @property (nonatomic, copy) NSString *baseUrl;
 
+/** 下载地址*/
+/** 注释 */
+@property (nonatomic, copy) NSString *downloadPath; 
+
 #pragma mark 请求回调
 /** 请求成功回调闭包*/
 @property (nonatomic, copy, nullable) YZBaseRequestSuccessBlock successCompletionBlock;
 
 /** 请求成功回调闭包*/
 @property (nonatomic, copy, nullable) YZBaseRequestFailureBlock failureCompletionBlock;
+
+/** 上传文件进度闭包*/
+@property (nonatomic, copy, nullable) YZBaseRequestUploadProgressBlock uploadProgressBlock;
+
+/** 下载文件进度闭包*/
+@property (nonatomic, copy, nullable) YZBaseRequestDownloadProgressBlock downloadProgressBlock;
 
 #pragma mark delegate
 /** 请求成功代理*/
@@ -61,6 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark request
 
+/** 开始请求*/
 - (void)start;
 
 /** 取消网络请求*/

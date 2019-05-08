@@ -10,6 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface YZBaseRequest (Setter)
+
+@property (nonatomic, strong, readwrite) NSURLSessionTask *requestTask;
+
+@end
+
 @interface YZBaseRequest (Private)
 
 /// 请求方法字符串

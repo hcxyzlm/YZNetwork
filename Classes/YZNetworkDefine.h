@@ -61,7 +61,7 @@ typedef void(^YZBaseRequestFailureBlock)(YZNetworkResponse *response);
 typedef void (^YZBaseRequestUploadProgressBlock)(NSProgress *uploadProgress);
 
 /// 下载进度
-typedef void (^YZBaseRequestDownloadProgress)(NSProgress *uploadProgress);
+typedef void (^YZBaseRequestDownloadProgressBlock)(NSProgress *uploadProgress);
 
 
 /// 网络请求响应代理

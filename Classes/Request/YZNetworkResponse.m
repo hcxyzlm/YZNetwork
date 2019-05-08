@@ -6,7 +6,7 @@
 //  Copyright © 2019 zhuo. All rights reserved.
 //
 
-#import "YZNetworkRepose.h"
+#import "YZNetworkResponse.h"
 
 @interface YZNetworkResponse()
 @property (nonatomic, strong, readwrite, nullable) id responseObject;

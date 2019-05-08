@@ -58,6 +58,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
         _processingQueue = dispatch_queue_create("com.YZNetworkManager.processingQueue", DISPATCH_QUEUE_CONCURRENT);
         pthread_mutex_init(&_lock, NULL);
         _manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration: [NSURLSessionConfiguration defaultSessionConfiguration]];
+        _manager.completionQueue = _processingQueue;
     }
     return self;
 }
@@ -80,7 +81,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
     id parameter = [self parameterForRequest:request];
     
     // 构建 URLRequest
-    NSMutableURLRequest *urlRequest = nil;
+    NSURLRequest *urlRequest = nil;
     AFHTTPRequestSerializer *serializer = [self requestSerializerForRequest:request];
     if (request.requestConstructingBody) {
         urlRequest = [serializer multipartFormRequestWithMethod:@"POST" URLString:URLString parameters:parameter constructingBodyWithBlock:request.requestConstructingBody error:&requestSerializationError];
@@ -97,66 +98,11 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
         } else {
 //            request.requestTask = [self sessionTaskForRequest:request error:&requestSerializationError];
         }
-    
-//    if (error) {
-//        if (completion) completion([YBNetworkResponse responseWithSessionTask:nil responseObject:nil error:error]);
-//        return nil;
-//    }
-    
-    // 发起网络请求
-//    if (request.downloadPath.length > 0) {
-//        return [self startDownloadTaskWithManager:manager URLRequest:URLRequest downloadPath:request.downloadPath downloadProgress:downloadProgress completion:completion];
-//    } else {
-//        return [self startDataTaskWithManager:manager URLRequest:URLRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
-//    }
-    
-//    NSURLRequest *customUrlRequest= [request buildCustomUrlRequest];
-//    if (customUrlRequest) {
-//        __block NSURLSessionDataTask *dataTask = nil;
-//        dataTask = [_manager dataTaskWithRequest:customUrlRequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-//            [self handleRequestResult:dataTask responseObject:responseObject error:error];
-//        }];
-//        request.requestTask = dataTask;
-//    } else {
-//        request.requestTask = [self sessionTaskForRequest:request error:&requestSerializationError];
-//    }
-//
-//    if (requestSerializationError) {
-//        [self requestDidFailWithRequest:request error:requestSerializationError];
-//        return;
-//    }
-//
-//    NSAssert(request.requestTask != nil, @"requestTask should not be nil");
-//
-//    // Set request task priority
-//    // !!Available on iOS 8 +
-//    if ([request.requestTask respondsToSelector:@selector(priority)]) {
-//        switch (request.requestPriority) {
-//            case YTKRequestPriorityHigh:
-//                request.requestTask.priority = NSURLSessionTaskPriorityHigh;
-//                break;
-//            case YTKRequestPriorityLow:
-//                request.requestTask.priority = NSURLSessionTaskPriorityLow;
-//                break;
-//            case YTKRequestPriorityDefault:
-//                /*!!fall through*/
-//            default:
-//                request.requestTask.priority = NSURLSessionTaskPriorityDefault;
-//                break;
-//        }
-//    }
-//
-//    // Retain request
-//    YTKLog(@"Add request: %@", NSStringFromClass([request class]));
-//    [self addRequestToRecord:request];
-//    [request.requestTask resume];
 }
-
-
 
 #pragma mark - Private
 
-- (void)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZBaseRequestUploadProgressBlock)uploadProgress downloadProgress:(nullable YZBaseRequestDownloadProgress)downloadProgress completion:(YZRequestCompletionBlock)completion {
+- (void)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZBaseRequestUploadProgressBlock)uploadProgress downloadProgress:(nullable YZBaseRequestDownloadProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
     
     __block NSURLSessionDataTask *task = [_manager dataTaskWithRequest:URLRequest uploadProgress:^(NSProgress * _Nonnull _uploadProgress) {
         if (uploadProgress) {
@@ -167,7 +113,9 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
             downloadProgress(_downloadProgress);
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self removeRequestfromRecord: request];
         if (completion) {
+//            completion(response, responseObject, error);
         }
     }];
     request.requestTask = task;
@@ -191,6 +139,10 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 - (void)addRequestToRecord:(YZBaseRequest *)request {
     YZ_RequestsRecord_LOCK(self.requestsRecord[@(request.requestTask.taskIdentifier)] = request;)
+}
+
+- (void)removeRequestfromRecord:(YZBaseRequest *)request {
+    YZ_RequestsRecord_LOCK([self.requestsRecord removeObjectForKey:@(request.requestTask.taskIdentifier)];)
 }
 
 - (AFHTTPRequestSerializer *)requestSerializerForRequest:(YZBaseRequest *)request {
@@ -224,7 +176,7 @@ typedef void(^YZRequestCompletionBlock)(YZNetworkResponse *response);
 
 #pragma mark getter
 
-- (NSMutableDictionary<NSNumber *,NSURLSessionTask *> *)requestsRecord {
+- (NSMutableDictionary<NSNumber *,YZBaseRequest *> *)requestsRecord {
     if (!_requestsRecord) {
         _requestsRecord = [NSMutableDictionary dictionary];
     }

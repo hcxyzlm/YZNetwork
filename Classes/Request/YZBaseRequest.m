@@ -8,6 +8,7 @@
 
 #import "YZBaseRequest.h"
 #import "YZBaseRequest+Private.h"
+#import "YZNetworkManager.h"
 
 @interface YZBaseRequest()
 
@@ -38,6 +39,8 @@
 - (void)clearRequestBlocks {
     self.successCompletionBlock = nil;
     self.failureCompletionBlock = nil;
+    self.uploadProgressBlock = nil;
+    self.downloadProgressBlock = nil;
 }
 
 #pragma mark - NSObject

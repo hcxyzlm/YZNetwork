@@ -40,6 +40,13 @@ typedef NS_ENUM(NSInteger, YZRequestMethod) {
     YZRequestMethodPATCH,
 };
 
+typedef NS_ENUM(NSInteger, YZResponseErrorType) {
+    YZResponseErrorTypeNone,            // 无
+    YZResponseErrorTypeTimedOut,         // 请求超时
+    YZResponseErrorTypeCancle,          // 网络取消
+    YZResponseErrorTypeNotReachable,    // 无网络
+};
+
 ///  请求序列化器
 typedef NS_ENUM(NSInteger, YZRequestSerializerType) {
     YZRequestSerializerTypeHTTP = 0,

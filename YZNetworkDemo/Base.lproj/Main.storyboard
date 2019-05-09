@@ -39,7 +39,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="跳转"/>
                                 <connections>
-                                    <action selector="goto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9vP-nz-Oz9"/>
+                                    <segue destination="pFm-0n-HRw" kind="push" id="Hmr-sd-oPy"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -50,6 +50,40 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Test View Controller-->
+        <scene sceneID="nxF-1P-Avp">
+            <objects>
+                <viewController id="pFm-0n-HRw" customClass="TestViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mcq-gf-3JI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UBb-iM-Sgy">
+                                <rect key="frame" x="170" y="228" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="正常请求"/>
+                                <connections>
+                                    <action selector="testNormalRequest:" destination="pFm-0n-HRw" eventType="touchUpInside" id="LXz-Jb-Eda"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITN-OU-AM1">
+                                <rect key="frame" x="170" y="335" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="下载请求"/>
+                                <connections>
+                                    <action selector="testDownRequest:" destination="pFm-0n-HRw" eventType="touchUpInside" id="cC9-aT-5q5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="WvM-KQ-AEO"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="1pL-t0-Rzu"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sEM-G9-fcT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1492" y="179"/>
         </scene>
     </scenes>
 </document>

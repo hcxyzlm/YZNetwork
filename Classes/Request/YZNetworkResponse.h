@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YZNetworkDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 请求任务*/
 @property (nonatomic, strong, readonly, nullable) NSURLSessionTask *sessionTask;
+
+/** 错误*/
+@property (nonatomic,assign, readonly) YZResponseErrorType errorType;
 
 + (instancetype)responseWithSessionTask:(nullable NSURLSessionTask *)sessionTask
                          responseObject:(nullable id)responseObject

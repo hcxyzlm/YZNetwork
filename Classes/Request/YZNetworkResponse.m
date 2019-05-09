@@ -13,6 +13,7 @@
 @property (nonatomic, strong, readwrite, nullable) NSHTTPURLResponse *httpURLResponse;
 @property (nonatomic, strong, readwrite, nullable) NSError * error;
 @property (nonatomic, strong, readwrite, nullable) NSURLSessionTask *sessionTask;
+@property (nonatomic,assign, readwrite) YZResponseErrorType errorType;
 @end
 
 @implementation YZNetworkResponse
@@ -25,6 +26,22 @@
     response.sessionTask = sessionTask;
     response.error = error;
     response.responseObject = responseObject;
+    if (error) {
+        response.error = error;
+        YZResponseErrorType errorType;
+        switch (error.code) {
+            case NSURLErrorTimedOut:
+                errorType = YZResponseErrorTypeTimedOut;
+                break;
+            case NSURLErrorCancelled:
+                errorType = YZResponseErrorTypeCancle;
+                break;
+            default:
+                errorType = YZResponseErrorTypeNone;
+                break;
+        }
+        response.errorType = errorType;
+    }
     return response;
 }
 

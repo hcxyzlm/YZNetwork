@@ -89,13 +89,18 @@ pthread_mutex_unlock(&_lock);
         if (completion) completion([YZNetworkResponse responseWithSessionTask:nil responseObject:nil error:requestSerializationError]);
         return nil;
     }
-    return [self startDataTaskWithRequest:request URLRequest:urlRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
+    if (request.downloadPath.length) {
+        return [self startDownloadTaskWithRequest:request URLRequest:urlRequest downloadProgress:downloadProgress completion:completion];
+    } else {
+        return [self startDataTaskWithRequest:request URLRequest:urlRequest uploadProgress:uploadProgress downloadProgress:downloadProgress completion:completion];
+    }
 }
 
 #pragma mark - Private
 
 - (NSNumber *)startDataTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest uploadProgress:(nullable YZRequestProgressBlock)uploadProgress downloadProgress:(nullable YZRequestProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
     
+    __weak typeof(self) weakSelf = self;
     __block NSURLSessionDataTask *task = [_manager dataTaskWithRequest:URLRequest uploadProgress:^(NSProgress * _Nonnull _uploadProgress) {
         if (uploadProgress) {
             uploadProgress(_uploadProgress);
@@ -105,6 +110,7 @@ pthread_mutex_unlock(&_lock);
             downloadProgress(_downloadProgress);
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        __strong typeof(weakSelf) self = weakSelf;
         [self removeRequestfromRecord: request];
         if (completion) {
             completion([YZNetworkResponse responseWithSessionTask:task responseObject:responseObject error:error]);
@@ -116,6 +122,38 @@ pthread_mutex_unlock(&_lock);
     [task resume];
     return @(task.taskIdentifier);
 }
+
+- (NSNumber *)startDownloadTaskWithRequest:(YZBaseRequest *)request URLRequest:(NSURLRequest *)URLRequest downloadProgress:(nullable YZRequestProgressBlock)downloadProgress completion:(YZRequestCompletionBlock)completion {
+    NSAssert(request.downloadPath != nil, @"downloadPath should not be nil");
+    
+    NSString *validDownloadPath = request.downloadPath.copy;
+    BOOL isDirectory;
+    if(![[NSFileManager defaultManager] fileExistsAtPath:validDownloadPath isDirectory:&isDirectory]) {
+        isDirectory = NO;
+    }
+    if (isDirectory) {
+        validDownloadPath = [NSString pathWithComponents:@[validDownloadPath, URLRequest.URL.lastPathComponent]];
+    }
+    
+    // 若存在文件则移除
+    if ([[NSFileManager defaultManager] fileExistsAtPath:validDownloadPath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:validDownloadPath error:nil];
+    }
+    __weak typeof(self) weakSelf = self;
+    __block NSURLSessionDownloadTask *task = [_manager downloadTaskWithRequest:URLRequest progress:downloadProgress destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        return [NSURL fileURLWithPath:validDownloadPath isDirectory:NO];
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        __strong typeof(weakSelf) self = weakSelf;
+        [self removeRequestfromRecord:request];
+        if (completion) {
+            completion([YZNetworkResponse responseWithSessionTask:task responseObject:filePath error:error]);
+        }
+    }];
+    request.requestTask = task;
+    [task resume];
+    return @(task.taskIdentifier);
+}
+
 
 - (NSString *)URLStringForRequest:(YZBaseRequest *)request {
     NSString *URLString = [request buildRequestUrl];
@@ -136,6 +174,7 @@ pthread_mutex_unlock(&_lock);
 }
 
 - (void)removeRequestfromRecord:(YZBaseRequest *)request {
+    YZNetworkLog(@"remove request: %@", NSStringFromClass([request class]));
     YZ_RequestsRecord_LOCK([self.requestsRecord removeObjectForKey:@(request.requestTask.taskIdentifier)];)
 }
 

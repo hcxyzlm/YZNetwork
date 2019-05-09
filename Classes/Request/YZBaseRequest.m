@@ -58,7 +58,7 @@
     if (response.error) {
         [self requestFailureWithResponse:response];
     } else {
-        [self requestFailureWithResponse:response];
+        [self requestSuccessWithResponse:response];
     }
 }
 

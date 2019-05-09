@@ -14,6 +14,7 @@
 		AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E08BD228068AE003DC31E /* YZBaseRequest.m */; };
 		AE5217E12282A37D00A8DCE8 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5217DF2282A28000A8DCE8 /* TestViewController.m */; };
 		AE5217E52282A45600A8DCE8 /* DefaultServerApi.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5217E42282A45600A8DCE8 /* DefaultServerApi.m */; };
+		AE9163032284555300B0C402 /* DownLoadFileApi.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9163022284555300B0C402 /* DownLoadFileApi.m */; };
 		AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB94D22802F4E00AF636F /* AppDelegate.m */; };
 		AEEFB95122802F4E00AF636F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB95022802F4E00AF636F /* ViewController.m */; };
 		AEEFB95422802F4E00AF636F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEFB95222802F4E00AF636F /* Main.storyboard */; };
@@ -51,6 +52,9 @@
 		AE5217DF2282A28000A8DCE8 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		AE5217E32282A45600A8DCE8 /* DefaultServerApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefaultServerApi.h; sourceTree = "<group>"; };
 		AE5217E42282A45600A8DCE8 /* DefaultServerApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultServerApi.m; sourceTree = "<group>"; };
+		AE5217E62282F9A500A8DCE8 /* YZNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetwork.h; sourceTree = "<group>"; };
+		AE9163012284555300B0C402 /* DownLoadFileApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownLoadFileApi.h; sourceTree = "<group>"; };
+		AE9163022284555300B0C402 /* DownLoadFileApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownLoadFileApi.m; sourceTree = "<group>"; };
 		AED4587D228048B300C02AF1 /* YZNetworkDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkDefine.h; sourceTree = "<group>"; };
 		AEEFB94922802F4E00AF636F /* YZNetwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YZNetwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEFB94C22802F4E00AF636F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -125,10 +129,12 @@
 		AE5217E22282A42900A8DCE8 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				AEEFB94F22802F4E00AF636F /* ViewController.h */,
-				AEEFB95022802F4E00AF636F /* ViewController.m */,
+				AE5217DE2282A28000A8DCE8 /* TestViewController.h */,
+				AE5217DF2282A28000A8DCE8 /* TestViewController.m */,
 				AE5217E32282A45600A8DCE8 /* DefaultServerApi.h */,
 				AE5217E42282A45600A8DCE8 /* DefaultServerApi.m */,
+				AE9163012284555300B0C402 /* DownLoadFileApi.h */,
+				AE9163022284555300B0C402 /* DownLoadFileApi.m */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -167,8 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				AE5217E22282A42900A8DCE8 /* test */,
-				AE5217DE2282A28000A8DCE8 /* TestViewController.h */,
-				AE5217DF2282A28000A8DCE8 /* TestViewController.m */,
+				AEEFB94F22802F4E00AF636F /* ViewController.h */,
+				AEEFB95022802F4E00AF636F /* ViewController.m */,
 				AEEFB94C22802F4E00AF636F /* AppDelegate.h */,
 				AEEFB94D22802F4E00AF636F /* AppDelegate.m */,
 				AEEFB95222802F4E00AF636F /* Main.storyboard */,
@@ -195,6 +201,7 @@
 				AE3E08BB2280657A003DC31E /* Request */,
 				AED4587C2280478400C02AF1 /* Manager */,
 				AED4587D228048B300C02AF1 /* YZNetworkDefine.h */,
+				AE5217E62282F9A500A8DCE8 /* YZNetwork.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -356,6 +363,7 @@
 				AE3E08BE228068AE003DC31E /* YZBaseRequest.m in Sources */,
 				AEEFB95C22802F5000AF636F /* main.m in Sources */,
 				AE5217E12282A37D00A8DCE8 /* TestViewController.m in Sources */,
+				AE9163032284555300B0C402 /* DownLoadFileApi.m in Sources */,
 				AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

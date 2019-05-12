@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, YZRequestMethod) {
     YZRequestMethodPATCH,
 };
 
+/// 网络出差类型
 typedef NS_ENUM(NSInteger, YZResponseErrorType) {
     YZResponseErrorTypeNone,            // 无
     YZResponseErrorTypeTimedOut,         // 请求超时
@@ -59,6 +60,15 @@ typedef NS_ENUM(NSInteger, YZRequestPriority) {
     YZRequestPriorityDefault = 0,
     YZRequestPriorityHigh = 4,
 };
+
+/// cache类型
+typedef  NS_ENUM(NSInteger, YZRequestCacheWriteMode) {
+    YZRequestCacheWriteModeNone = 0,            // 没缓存
+    YZRequestCacheWriteModeMemory = 1 << 0,     // 内存缓存
+    YZRequestCacheWriteModeDisk = 1 << 1,     // 文件缓存
+    YZRequestCacheWriteModeMemoryAndDisk = YZRequestCacheWriteModeMemory | YZRequestCacheWriteModeDisk,     // 文件缓存
+};
+
 
 @class YZBaseRequest;
 @class YZNetworkResponse;

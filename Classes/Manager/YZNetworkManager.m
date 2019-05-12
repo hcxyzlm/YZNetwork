@@ -89,6 +89,8 @@ pthread_mutex_unlock(&_lock);
         if (completion) completion([YZNetworkResponse responseWithSessionTask:nil responseObject:nil error:requestSerializationError]);
         return nil;
     }
+    
+    // 优先级
     if (request.downloadPath.length) {
         return [self startDownloadTaskWithRequest:request URLRequest:urlRequest downloadProgress:downloadProgress completion:completion];
     } else {
@@ -118,6 +120,7 @@ pthread_mutex_unlock(&_lock);
     }];
     request.requestTask = task;
     NSAssert(request.requestTask != nil, @"requestTask should not be nil");
+    [self setRequestPriority:request];
     [self addRequestToRecord:request];
     [task resume];
     return @(task.taskIdentifier);
@@ -150,6 +153,8 @@ pthread_mutex_unlock(&_lock);
         }
     }];
     request.requestTask = task;
+    [self setRequestPriority:request];
+    [self addRequestToRecord:request];
     [task resume];
     return @(task.taskIdentifier);
 }
@@ -188,6 +193,20 @@ pthread_mutex_unlock(&_lock);
     
     requestSerializer.timeoutInterval = [request timeoutInterval];
     return requestSerializer;
+}
+
+- (void)setRequestPriority:(YZBaseRequest *)request {
+    switch (request.requestPriority) {
+        case YZRequestPriorityLow:
+            request.requestTask.priority = NSURLSessionTaskPriorityLow;
+            break;
+        case YZRequestPriorityDefault:
+            request.requestTask.priority = NSURLSessionTaskPriorityDefault;
+            break;
+        case YZRequestPriorityHigh:
+            request.requestTask.priority = NSURLSessionTaskPriorityHigh;
+            break;
+    }
 }
 
 #pragma mark getter

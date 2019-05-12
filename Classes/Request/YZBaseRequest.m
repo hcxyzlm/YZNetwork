@@ -10,12 +10,12 @@
 #import "YZBaseRequest+Private.h"
 #import "YZNetworkManager.h"
 #import "YZNetworkResponse.h"
-
-#define YZNETWORK_MAIN_QUEUE_ASYNC(block) YBNETWORK_QUEUE_ASYNC(dispatch_get_main_queue(), block)
+#import "YZNetworkCache.h"
 
 @interface YZBaseRequest()
 
 @property (nonatomic, strong, readwrite) NSURLSessionTask *requestTask;
+@property (nonatomic, strong) YZNetworkCache* cacheHandler;
 
 @end
 
@@ -118,6 +118,15 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@: %p>{ URL: %@ } { method: %@ } { arguments: %@ }", NSStringFromClass([self class]), self, [self buildRequestUrl], self.requestHttpMethedString, self.requestParameter];
+}
+
+#pragma mark getter/setter
+
+- (YZNetworkCache *)cacheHandler {
+    if (!_cacheHandler) {
+        _cacheHandler = [[YZNetworkCache alloc] init];
+    }
+    return _cacheHandler;
 }
 
 @end

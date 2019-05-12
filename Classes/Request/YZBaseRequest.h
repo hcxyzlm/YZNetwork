@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* 网络的基础api类，一般一个api对应一个YZBaseRequest对象 */
 
+@class YZNetworkCache;
+
 @interface YZBaseRequest : NSObject
 
 #pragma mark 网络请求数据
@@ -68,6 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark http 相关
 
 @property (nonatomic, strong, readonly) NSURLSessionTask *requestTask;
+
+@property (nonatomic, strong, readonly) YZNetworkCache* cacheHandler;
 
 #pragma mark request
 

@@ -27,10 +27,7 @@
 }
 - (IBAction)testNormalRequest:(id)sender {
     DefaultServerApi *request = [[DefaultServerApi alloc] init];
-    request.requestMethod = YZRequestMethodGET;
-    request.requestURL = @"weatherApi";
     request.requestParameter = @{@"city":@"深圳"};
-    request.requestSerializerType = YZRequestSerializerTypeJSON;
     [request startWithSuccess:^(YZNetworkResponse *response) {
         NSData * jsonData= [NSJSONSerialization dataWithJSONObject:response.responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];

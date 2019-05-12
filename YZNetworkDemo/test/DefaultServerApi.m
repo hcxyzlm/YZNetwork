@@ -16,10 +16,27 @@
 {
     self = [super init];
     if (self) {
-        self.baseURL = @"https://www.apiopen.top";
-        self.timeoutInterval = 25;
     }
     return self;
+}
+
+- (NSString *)baseURL {
+    return @"https://www.apiopen.top";
+}
+
+- (NSTimeInterval)timeoutInterval {
+    return 60;
+}
+
+- (NSString *)requestURL {
+    return @"weatherApi";
+}
+
+- (YZRequestMethod)requestMethod {
+    return YZRequestMethodGET;
+}
+- (YZRequestSerializerType)requestSerializerType {
+    return YZRequestSerializerTypeJSON;
 }
 
 #pragma mark - Override

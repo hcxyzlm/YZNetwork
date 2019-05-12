@@ -125,8 +125,6 @@
 				AE1F68B42281AD7A00AAABD0 /* YZBaseRequest+Private.m */,
 				AE1F68B62281F08700AAABD0 /* YZNetworkResponse.h */,
 				AE1F68B72281F08700AAABD0 /* YZNetworkResponse.m */,
-				AE68D6DD2287C79D00DF3307 /* YZNetworkCache.h */,
-				AE68D6DE2287C79D00DF3307 /* YZNetworkCache.m */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -142,6 +140,15 @@
 				AE9163022284555300B0C402 /* DownLoadFileApi.m */,
 			);
 			path = test;
+			sourceTree = "<group>";
+		};
+		AE68D6E0228874A600DF3307 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				AE68D6DD2287C79D00DF3307 /* YZNetworkCache.h */,
+				AE68D6DE2287C79D00DF3307 /* YZNetworkCache.m */,
+			);
+			path = Cache;
 			sourceTree = "<group>";
 		};
 		AED4587C2280478400C02AF1 /* Manager */ = {
@@ -203,6 +210,7 @@
 		AEEFB97022802F7700AF636F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AE68D6E0228874A600DF3307 /* Cache */,
 				AE3E08BB2280657A003DC31E /* Request */,
 				AED4587C2280478400C02AF1 /* Manager */,
 				AED4587D228048B300C02AF1 /* YZNetworkDefine.h */,

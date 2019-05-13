@@ -66,7 +66,7 @@ typedef  NS_ENUM(NSInteger, YZRequestCacheWriteMode) {
     YZRequestCacheWriteModeNone = 0,            // 没缓存
     YZRequestCacheWriteModeMemory = 1 << 0,     // 内存缓存
     YZRequestCacheWriteModeDisk = 1 << 1,     // 文件缓存
-    YZRequestCacheWriteModeMemoryAndDisk = YZRequestCacheWriteModeMemory | YZRequestCacheWriteModeDisk,     // 文件缓存
+    YZRequestCacheWriteModeMemoryAndDisk = YZRequestCacheWriteModeMemory | YZRequestCacheWriteModeDisk,     // 内存+文件缓存
 };
 
 

@@ -15,6 +15,8 @@
 		AE5217E12282A37D00A8DCE8 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5217DF2282A28000A8DCE8 /* TestViewController.m */; };
 		AE5217E52282A45600A8DCE8 /* DefaultServerApi.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5217E42282A45600A8DCE8 /* DefaultServerApi.m */; };
 		AE68D6DF2287C79D00DF3307 /* YZNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AE68D6DE2287C79D00DF3307 /* YZNetworkCache.m */; };
+		AE7040B02289CF5C00498D1D /* YZNetworkCacheTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7040AF2289CF5B00498D1D /* YZNetworkCacheTest.m */; };
+		AE7040B22289D2E300498D1D /* YZNetworkBasicTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7040B12289D2E300498D1D /* YZNetworkBasicTest.m */; };
 		AE9163032284555300B0C402 /* DownLoadFileApi.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9163022284555300B0C402 /* DownLoadFileApi.m */; };
 		AEEFB94E22802F4E00AF636F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB94D22802F4E00AF636F /* AppDelegate.m */; };
 		AEEFB95122802F4E00AF636F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEEFB95022802F4E00AF636F /* ViewController.m */; };
@@ -56,6 +58,8 @@
 		AE5217E62282F9A500A8DCE8 /* YZNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetwork.h; sourceTree = "<group>"; };
 		AE68D6DD2287C79D00DF3307 /* YZNetworkCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkCache.h; sourceTree = "<group>"; };
 		AE68D6DE2287C79D00DF3307 /* YZNetworkCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkCache.m; sourceTree = "<group>"; };
+		AE7040AF2289CF5B00498D1D /* YZNetworkCacheTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkCacheTest.m; sourceTree = "<group>"; };
+		AE7040B12289D2E300498D1D /* YZNetworkBasicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZNetworkBasicTest.m; sourceTree = "<group>"; };
 		AE9163012284555300B0C402 /* DownLoadFileApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownLoadFileApi.h; sourceTree = "<group>"; };
 		AE9163022284555300B0C402 /* DownLoadFileApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownLoadFileApi.m; sourceTree = "<group>"; };
 		AED4587D228048B300C02AF1 /* YZNetworkDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZNetworkDefine.h; sourceTree = "<group>"; };
@@ -203,6 +207,8 @@
 			children = (
 				AEEFB96522802F5000AF636F /* YZNetworkTests.m */,
 				AEEFB96722802F5000AF636F /* Info.plist */,
+				AE7040AF2289CF5B00498D1D /* YZNetworkCacheTest.m */,
+				AE7040B12289D2E300498D1D /* YZNetworkBasicTest.m */,
 			);
 			path = YZNetworkTests;
 			sourceTree = "<group>";
@@ -386,6 +392,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE7040B22289D2E300498D1D /* YZNetworkBasicTest.m in Sources */,
+				AE7040B02289CF5C00498D1D /* YZNetworkCacheTest.m in Sources */,
 				AEEFB96622802F5000AF636F /* YZNetworkTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

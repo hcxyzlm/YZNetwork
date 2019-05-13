@@ -52,11 +52,11 @@ static YYMemoryCache *_memoryCache = nil;
     chachePackage.object = object;
     chachePackage.updateDate = [NSDate date];
     
-    if (self.wirteMode | YZRequestCacheWriteModeMemory) {
+    if (self.wirteMode & YZRequestCacheWriteModeMemory) {
         [[YZNetworkCache memoryCache] setObject:chachePackage forKey:key];
     }
     
-    if (self.wirteMode | YZRequestCacheWriteModeDisk) {
+    if (self.wirteMode & YZRequestCacheWriteModeDisk) {
         [[YZNetworkCache diskCache] setObject:chachePackage forKey:key];
     }
 }
@@ -101,9 +101,14 @@ static YYMemoryCache *_memoryCache = nil;
     [[YZNetworkCache diskCache] removeAllObjects];
 }
 
+- (void)removeAllCache {
+    [self removeMemoryCache];
+    [self removeDiskCache];
+}
+
 #pragma mark getter
 + (YYMemoryCache *)memoryCache {
-    if (_memoryCache) {
+    if (!_memoryCache) {
         _memoryCache = [[YYMemoryCache alloc] init];
         _memoryCache.name = YZNetworkCacheName;
     }
@@ -112,7 +117,7 @@ static YYMemoryCache *_memoryCache = nil;
 }
 
 + (YYDiskCache *)diskCache {
-    if (_diskCache) {
+    if (!_diskCache) {
         NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
         NSString *path = [cacheFolder stringByAppendingPathComponent:YZNetworkCacheName];
         _diskCache = [[YYDiskCache alloc] initWithPath:path];

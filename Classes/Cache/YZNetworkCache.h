@@ -32,12 +32,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setObject:(nullable id<NSCoding>)object forKey:(NSString *)key;
 
+
 /**
- 清除磁盘对象
+ 获取缓存
+
+ @param key 存储key
+ @param block 回调
+ */
+- (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<NSCoding> _Nullable object))block;
+
+/**
+ 清除内存中缓存
  */
 - (void)removeMemoryCache;
 
+
+/**
+ 清除磁盘缓存
+ */
 - (void)removeDiskCache;
+/**
+ 清除所有缓存
+ */
+- (void)removeAllCache;
 
 #pragma mark yycache
 

@@ -71,7 +71,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSURLSessionTask *requestTask;
 
+/** 获取缓存*/
+- (id)getObjectFromCache;
+/** 缓存处理 */
 @property (nonatomic, strong, readonly) YZNetworkCache* cacheHandler;
+/** 可重写该方法，定制不同的缓存key*/
+- (NSString *)requestCacheKey;
+
 
 #pragma mark request
 
@@ -81,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startWithUploadProgress:(nullable YZRequestProgressBlock)uploadProgress downloadProgress:(nullable YZRequestProgressBlock)downloadProgress success:(nullable YZRequestSuccessBlock)success failure:(nullable YZRequestFailureBlock)failure;
 
+/** 开始请求网络，*/
 - (void)start;
 
 /** 取消网络请求*/

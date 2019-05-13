@@ -40,7 +40,6 @@
 }
 
 - (void)start {
-    
     __weak typeof(self) weakSelf = self;
     [[YZNetworkManager sharedManager] startNetworkingWithRequest:self uploadProgress:self.uploadProgressBlock downloadProgress:self.downloadProgressBlock completion:^(YZNetworkResponse * _Nonnull response) {
         __strong typeof(weakSelf) self = weakSelf;
@@ -58,6 +57,8 @@
     if (response.error) {
         [self requestFailureWithResponse:response];
     } else {
+        /** 处理缓存 */
+        [self.cacheHandler setObject:response.responseObject forKey:[self requestCacheKey]];
         [self requestSuccessWithResponse:response];
     }
 }
@@ -113,6 +114,41 @@
     });
 }
 
+#pragma mark cache
+
+- (id)getObjectFromCache {
+    return [self getObjectFromCacheWithKey:[self requestCacheKey]];
+}
+
+- (id)getObjectFromCacheWithKey:(NSString *)cacheKey {
+    __block id cacheObject = nil;
+    [self.cacheHandler objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nullable object) {
+        cacheObject = object;
+    }];
+    
+    return cacheObject;
+}
+
+- (NSString *)requestCacheKey {
+    return [self requestIdentifier];
+}
+
+- (NSString *)requestIdentifier {
+    NSString *identifier = [NSString stringWithFormat:@"%@_%@_%@_%@", [self requestHttpMethedString], [self baseURL],[self requestURL], [self stringFromParameter:self.requestParameter]];
+    return identifier;
+}
+
+- (NSString *)stringFromParameter:(NSDictionary *)parameter {
+    NSMutableString *string = [NSMutableString string];
+    NSArray *allKeys = [parameter.allKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [[NSString stringWithFormat:@"%@", obj1] compare:[NSString stringWithFormat:@"%@", obj2]];
+    }];
+    
+    for (id key in allKeys) {
+        [string appendString:[NSString stringWithFormat:@"%@%@=%@", string.length > 0 ? @"&" : @"?", key, parameter[key]]];
+    }
+    return string;
+}
 
 #pragma mark - NSObject
 

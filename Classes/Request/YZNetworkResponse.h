@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 错误*/
 @property (nonatomic, strong, readonly, nullable) NSError * error;
 
-/** 请求原始http数据*/
+/** 网络原始http数据*/
 @property (nonatomic, strong, readonly, nullable) NSHTTPURLResponse *httpURLResponse;
 
 /** 请求任务*/

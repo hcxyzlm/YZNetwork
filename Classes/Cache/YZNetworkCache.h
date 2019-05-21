@@ -9,12 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "YZNetworkDefine.h"
 
-#if __has_include(<YYCache/YYCache.h>)
-#import <YYCache/YYCache.h>
-#else
-#import "YYCache.h"
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// 网络缓存类
@@ -46,21 +40,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeMemoryCache;
 
-
-/**
- 清除磁盘缓存
- */
-- (void)removeDiskCache;
 /**
  清除所有缓存
  */
 - (void)removeAllCache;
 
-#pragma mark yycache
+#pragma mark cache
 
-@property (strong, readonly) YYMemoryCache *memoryCache;
-
-@property (strong, readonly) YYDiskCache *diskCache;
+@property (strong, readonly) NSCache *memoryCache;
 
 @end
 

@@ -6,7 +6,6 @@ target 'YZNetwork' do
   # use_frameworks!
 
    	pod 'AFNetworking', '~> 3.2.1'
-  	pod 'YYCache', '~> 1.0.4'
 
   target 'YZNetworkTests' do
     inherit! :search_paths

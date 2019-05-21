@@ -37,7 +37,7 @@
                 errorType = YZResponseErrorTypeCancle;
                 break;
             default:
-                errorType = YZResponseErrorTypeNone;
+                errorType = YZResponseErrorTypeNotReachable;
                 break;
         }
         response.errorType = errorType;

@@ -65,8 +65,8 @@ typedef NS_ENUM(NSInteger, YZRequestPriority) {
 typedef  NS_ENUM(NSInteger, YZRequestCacheWriteMode) {
     YZRequestCacheWriteModeNone = 0,            // 没缓存
     YZRequestCacheWriteModeMemory = 1 << 0,     // 内存缓存
-    YZRequestCacheWriteModeDisk = 1 << 1,     // 文件缓存
-    YZRequestCacheWriteModeMemoryAndDisk = YZRequestCacheWriteModeMemory | YZRequestCacheWriteModeDisk,     // 内存+文件缓存
+//    YZRequestCacheWriteModeDisk = 1 << 1,     // 文件缓存
+//    YZRequestCacheWriteModeMemoryAndDisk = YZRequestCacheWriteModeMemory | YZRequestCacheWriteModeDisk,     // 内存+文件缓存
 };
 
 
@@ -94,6 +94,22 @@ typedef void (^YZRequestProgressBlock)(NSProgress *progress);
 - (void)request:(__kindof YZBaseRequest *)request uploadProgress:(NSProgress *)progress;
 
 - (void)request:(__kindof YZBaseRequest *)request downloadProgress:(NSProgress *)progress;
+
+@end
+
+/** 拦截器*/
+
+@protocol YZNetworkInterceptor <NSObject>
+@optional
+
+/// 准备工作
+- (NSURLRequest *)requestPrepare:(NSURLRequest*)request withRequest:(YZBaseRequest *)request;
+
+/// 即将发起请求
+- (NSURLRequest *)requestWillSend:(NSURLRequest*)request withRequest:(YZBaseRequest *)request;
+
+/// 接受数据
+- (NSURLRequest *)requestDidReceive:(YZNetworkResponse*)result withRequest:(YZBaseRequest *)request;
 
 @end
 

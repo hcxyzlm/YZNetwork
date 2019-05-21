@@ -16,8 +16,8 @@
 
 
 static NSString * const YZNetworkCacheName = @"YZNetworkCacheName";
-static YYDiskCache *_diskCache = nil;
-static YYMemoryCache *_memoryCache = nil;
+//static YYDiskCache *_diskCache = nil;
+static NSCache *_memoryCache = nil;
 
 @implementation YZNetworkCacheItem
 
@@ -55,10 +55,6 @@ static YYMemoryCache *_memoryCache = nil;
     if (self.wirteMode & YZRequestCacheWriteModeMemory) {
         [[YZNetworkCache memoryCache] setObject:chachePackage forKey:key];
     }
-    
-    if (self.wirteMode & YZRequestCacheWriteModeDisk) {
-        [[YZNetworkCache diskCache] setObject:chachePackage forKey:key];
-    }
 }
 
 - (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<NSCoding> _Nullable object))block {
@@ -84,45 +80,24 @@ static YYMemoryCache *_memoryCache = nil;
     if (object) {
         callBack(object);
     } else {
-        [[YZNetworkCache diskCache] objectForKey:key withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nullable object) {
-            if (object && ![[YZNetworkCache memoryCache] containsObjectForKey:key]) {
-                [[YZNetworkCache memoryCache] setObject:object forKey:key];
-            }
-            callBack(object);
-        }];
-    };
+        callBack(nil);
+    }
 }
 
 - (void)removeMemoryCache {
     [[YZNetworkCache memoryCache] removeAllObjects];
 }
-
-- (void)removeDiskCache {
-    [[YZNetworkCache diskCache] removeAllObjects];
-}
-
 - (void)removeAllCache {
     [self removeMemoryCache];
-    [self removeDiskCache];
 }
 
 #pragma mark getter
-+ (YYMemoryCache *)memoryCache {
++ (NSCache *)memoryCache {
     if (!_memoryCache) {
-        _memoryCache = [[YYMemoryCache alloc] init];
+        _memoryCache = [[NSCache alloc] init];
         _memoryCache.name = YZNetworkCacheName;
     }
     
     return _memoryCache;
-}
-
-+ (YYDiskCache *)diskCache {
-    if (!_diskCache) {
-        NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-        NSString *path = [cacheFolder stringByAppendingPathComponent:YZNetworkCacheName];
-        _diskCache = [[YYDiskCache alloc] initWithPath:path];
-    }
-    
-    return _diskCache;
 }
 @end

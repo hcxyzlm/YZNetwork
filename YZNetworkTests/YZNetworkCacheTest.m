@@ -54,21 +54,21 @@
     XCTAssertTrue(cacheObject != nil);
 }
 
-- (void)testDiskCache {
-    [_api.cacheHandler removeAllCache];
-    __weak typeof(self) weakSelf = self;
-    _api.cacheHandler.wirteMode = YZRequestCacheWriteModeDisk;
-    [_api startWithSuccess:^(YZNetworkResponse *response) {
-        
-        __strong typeof(weakSelf) self = weakSelf;
-        XCTAssertTrue(response.error == nil);
-        
-    } failure:^(YZNetworkResponse *response) {
-    }];
-    sleep(5);
-    id cacheObject = [self->_api getObjectFromCache];
-    NSLog(@"disk cache json = %@", cacheObject);
-    XCTAssertTrue(cacheObject != nil);
-}
+//- (void)testDiskCache {
+//    [_api.cacheHandler removeAllCache];
+//    __weak typeof(self) weakSelf = self;
+//    _api.cacheHandler.wirteMode = YZRequestCacheWriteModeDisk;
+//    [_api startWithSuccess:^(YZNetworkResponse *response) {
+//
+//        __strong typeof(weakSelf) self = weakSelf;
+//        XCTAssertTrue(response.error == nil);
+//
+//    } failure:^(YZNetworkResponse *response) {
+//    }];
+//    sleep(5);
+//    id cacheObject = [self->_api getObjectFromCache];
+//    NSLog(@"disk cache json = %@", cacheObject);
+//    XCTAssertTrue(cacheObject != nil);
+//}
 
 @end

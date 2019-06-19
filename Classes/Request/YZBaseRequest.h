@@ -71,6 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSURLSessionTask *requestTask;
 
+#pragma mark 网络重试
+@property (nonatomic, assign) NSInteger retryCount;
+
 /** 获取缓存*/
 - (id)getObjectFromCache;
 /** 缓存处理 */
